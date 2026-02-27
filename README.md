@@ -47,6 +47,49 @@ uv run main.py
 
 - connects to Google's Gemini 2.5 Flash model
 - Reports token usage (prompt and response tokens)
+- Interactive UI with modern dark mode design
+
+## Project Structure
+
+- `main.py`: The CLI entry point for the AI agent.
+- `calculator/`: A standalone calculator module.
+- `functions/`: Helper functions for file system operations (`get_files_info.py`, `get_file_content.py`).
+- `ui/`: Full stack application for the agent.
+  - `backend/`: Flask server to expose agent capabilities.
+  - `frontend/`: React + Vite application for chat interface.
+
+## UI Usage
+
+Get started with the beautiful web interface:
+
+### 1. Start the Backend (API)
+
+In one terminal, navigate to the backend folder:
+
+```bash
+cd ui/backend
+# Install dependencies if you haven't yet
+pip install -r requirements.txt
+# Or using uv
+uv pip install -r requirements.txt
+
+# Run the server
+uv run server.py
+# or
+python server.py
+```
+
+### 2. Start the Frontend (React App)
+
+In a second terminal:
+
+```bash
+cd ui/frontend
+npm install
+npm run dev
+```
+
+Open your browser at `http://localhost:5173`.
 
 ## Calculator Module
 
