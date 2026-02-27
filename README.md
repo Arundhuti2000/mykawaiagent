@@ -47,3 +47,28 @@ uv run main.py
 
 - connects to Google's Gemini 2.5 Flash model
 - Reports token usage (prompt and response tokens)
+
+## Calculator Module
+
+This project also includes a simple command-line calculator.
+
+### Usage
+
+To use the calculator, run the `calculator/main.py` script with a mathematical expression:
+
+```bash
+python calculator/main.py "3 + 5 * (10 - 2)"
+# Output:
+# {
+#   "expression": "3 + 5 * (10 - 2)",
+#   "result": 43
+# }
+```
+
+### Supported Operations
+
+- Addition `+`
+- Subtraction `-`
+- Multiplication `*`
+- Division `/`
+- Parentheses `()` for grouping
