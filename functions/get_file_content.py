@@ -1,9 +1,24 @@
 import os
 import sys
+from google.genai import types
 from config import MAX_CHARS
 # Add the project root to sys.path to allow importing config
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
+
+schema_get_file_content = types.FunctionDeclaration(
+    name="get_file_content",
+    description="Read file content of a file in a specified directory relative to the working directory, providing file size and directory status",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "file_path": types.Schema(
+                type=types.Type.STRING,
+                description="File path path to the file from, relative to the working directory (default is the working directory itself)",
+            ),
+        },
+    ),
+)
 
 def get_file_content(working_directory, file_path):
     try:
