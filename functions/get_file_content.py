@@ -8,15 +8,16 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 schema_get_file_content = types.FunctionDeclaration(
     name="get_file_content",
-    description="Read file content of a file in a specified directory relative to the working directory, providing file size and directory status",
+    description="Read the content of a file",
     parameters=types.Schema(
         type=types.Type.OBJECT,
         properties={
             "file_path": types.Schema(
                 type=types.Type.STRING,
-                description="File path path to the file from, relative to the working directory (default is the working directory itself)",
+                description="Path to the file to read, relative to the working directory",
             ),
         },
+        required=["file_path"],
     ),
 )
 
