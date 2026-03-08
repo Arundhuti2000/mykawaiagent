@@ -1,4 +1,4 @@
-# My Kawai Agent
+# My Kawai Agent🎀
 
 A small AI agent project using the Google Gemini API.
 
