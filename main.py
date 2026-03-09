@@ -21,41 +21,48 @@ def main():
     # Now we can access `args.user_prompt`
     messages = [types.Content(role="user", parts=[types.Part(text=args.user_prompt)])]
     client = genai.Client(api_key=api_key)
-    response= client.models.generate_content(
-        model='gemini-2.5-flash',
-        contents=messages,
-        config=types.GenerateContentConfig(
-            tools=[available_functions],
-            system_instruction=system_prompt
+    for _ in range(20): 
+        response= client.models.generate_content(
+            model='gemini-2.5-flash',
+            contents=messages,
+            config=types.GenerateContentConfig(
+                tools=[available_functions],
+                system_instruction=system_prompt
+            )
         )
-    )
-    if args.verbose:
-        print(f"User prompt: {args.user_prompt}")
-        print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
-        print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
-    print(response.text)
-    if response.function_calls: 
-        function_results = []
-        for function_call in response.function_calls:
-            function_call_result = call_function(function_call, args.verbose)
-            if not function_call_result.parts:
-                raise Exception("Function call returned no parts")
-            
-            function_response_part = function_call_result.parts[0]
-            function_response = function_response_part.function_response
-            
-            if not function_response:
-                raise Exception("Function call returned no function_response")
-            
-            if function_response.response is None:
-                raise Exception("Function call returned no response data")
-            
-            function_results.append(function_response_part)
-            
-            if args.verbose:
-                print(f"-> {function_response.response}")
-    else:
+        if response.candidates:
+            for candidate in response.candidates:
+                messages.append(candidate.content)
+        if args.verbose:
+            print(f"User prompt: {args.user_prompt}")
+            print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
+            print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
         print(response.text)
+        if response.function_calls: 
+            function_results = []
+            for function_call in response.function_calls:
+                function_call_result = call_function(function_call, args.verbose)
+                if not function_call_result.parts:
+                    raise Exception("Function call returned no parts")
+                
+                function_response_part = function_call_result.parts[0]
+                function_response = function_response_part.function_response
+                
+                if not function_response:
+                    raise Exception("Function call returned no function_response")
+                
+                if function_response.response is None:
+                    raise Exception("Function call returned no response data")
+                
+                function_results.append(function_response_part)
+                
+                if args.verbose:
+                    print(f"-> {function_response.response}")
+            messages.append(types.Content(role="user", parts=function_results))
+        else:
+            break
+    else:
+        print("Maximum iterations reached without a final response.")
 
 
 if __name__ == "__main__":
